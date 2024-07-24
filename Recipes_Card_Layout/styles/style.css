@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+  font-family: 'Exo', sans-serif;
+}
+
+html {
+    height: 100%;
+    background-color: #F1F1F1;
+}
+
+body{
+    margin: unset;
+}
+
+.wrapper {
+    display: flex;
+    width: 80%;
+    justify-content: center;
+    margin: auto;
+    margin-top: 5%;
+}
+
+.recipeCards {
+    width: 40%;
+    margin-right: 50px;
+}
+
+.recipe {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.recipe:hover {
+    cursor: pointer;
+    background-color: #F6B100;
+}
+
+.recipe:hover  p {
+ color: white;
+}
+
+.recipe:hover .rating p {
+    background-color: white;
+    color: #F6B100;
+}
+
+.recipe:nth-child(n+2){
+    margin-top: 15px;
+}
+
+.recipeImg {
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.recipeText {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 5%;
+    margin-right: auto;
+}
+
+.recipeText h3 {
+    margin: unset;
+}
+
+.recipeText p {
+    margin: 5px 0 0 0;
+    font-size: 18px;
+    color: #F6B100;
+}
+
+.recipeText p i {
+    font-size: 16px;
+}
+
+.rating {
+    margin-right: 5%;
+    align-self: center;
+}
+
+.rating p {
+    background-color: #F6B100;
+    color: white;
+    padding: 5px 9px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.selectedItem {
+    width: 500px;
+}
+
+.selectedImg {
+    position: relative;
+}
+
+.selectedImg img {
+    border-radius: 10px;
+}
+
+.selectedImg::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: 50%;
+    border-end-end-radius: 10px;
+    border-end-start-radius: 10px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 2));
+}
+
+.shortText {
+    position: absolute;
+    bottom: 25px;
+    left: 30px;
+    color: white;
+    z-index: 2;
+}
+
+.selectedRecipeText {
+    background-color: white;
+    border-radius: 10px;
+    height: 48%;
+    margin-top: 20px;
+    overflow: auto;
+}
+
+.selectedRecipeText h2 {
+    padding: 0 0 0 10px;
+}
+
+.selectedRecipeText p {
+    padding: 0 0 10px 10px;
+}
+
+.favIcon {
+    position: absolute;
+    top: 20px;
+    left: 30px;
+    background-color: #2f2921;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.favIcon:hover {
+    background-color: #7ac900 !important;
+    cursor: pointer;
+}
+
+.favIcon i {
+    font-size: 20px;
+    color: white;
+}
+
+#cookRecipe {
+    white-space: pre-line;
+
+}
