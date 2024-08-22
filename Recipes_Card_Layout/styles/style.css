@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,100..900;1,100..900&display=swap');
 
 * {
-  font-family: 'Exo', sans-serif;
+    font-family: 'Exo', sans-serif;
 }
 
 html {
@@ -9,7 +9,7 @@ html {
     background-color: #F1F1F1;
 }
 
-body{
+body {
     margin: unset;
 }
 
@@ -38,8 +38,8 @@ body{
     background-color: #F6B100;
 }
 
-.recipe:hover  p {
- color: white;
+.recipe:hover p {
+    color: white;
 }
 
 .recipe:hover .rating p {
@@ -47,7 +47,7 @@ body{
     color: #F6B100;
 }
 
-.recipe:nth-child(n+2){
+.recipe:nth-child(n+2) {
     margin-top: 15px;
 }
 
@@ -118,16 +118,18 @@ body{
 
 .shortText {
     position: absolute;
-    bottom: 25px;
+    bottom: 10px;
     left: 30px;
     color: white;
     z-index: 2;
+    margin-right: 30px;
 }
 
 .selectedRecipeText {
     background-color: white;
     border-radius: 10px;
-    height: 48%;
+    /* height: 48%; */
+    height: 335px;
     margin-top: 20px;
     overflow: auto;
 }
@@ -162,4 +164,48 @@ body{
 #cookRecipe {
     white-space: pre-line;
 
+}
+
+/* Media queries */
+
+@media only screen and (max-width: 460px) {
+    .wrapper {
+        width: 92%;
+        flex-direction: column;
+    }
+
+    .recipeCards {
+        display: flex;
+        overflow: scroll;
+        width: 100%;
+    }
+
+    .recipe {
+        flex-direction: column;
+        margin-right: 10px;
+        justify-content: unset;
+    }
+
+    .recipeText {
+        font-size: 12px;
+        margin-left: 10%;
+        padding-right: 5px;
+    }
+
+    .recipeText p {
+        font-size: 12px;
+    }
+
+    .recipe:nth-child(n+2) {
+        margin-top: unset;
+        justify-content: space-between;
+    }
+
+    .recipe:nth-child(n+2) .recipeText {
+        margin-bottom: auto;
+    }
+
+    .recipe:nth-child(n+2) .recipeText p {
+        margin-top: 24%;
+    }
 }
