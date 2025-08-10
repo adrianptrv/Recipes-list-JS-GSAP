@@ -2,123 +2,127 @@
 //** Favorite buttons logic**//
 //////////////////////////////
 
-var star = document.querySelector('#star-icon');
-var starBtn = document.querySelector('.favIcon');
+var star = document.querySelector("#star-icon");
+var starBtn = document.querySelector(".favIcon");
 
 // Map containing the boolean values if a recipe should be bookmarked or not
 var favMap = {
-  0: false,
-  1: false,
-  2: false,
-  3: false,
-  4: false
-}
+    0: false,
+    1: false,
+    2: false,
+    3: false,
+    4: false,
+};
 
 // Get all recipes titles in a lsit, and covert the list to array
-var recipeTitles = Array.from(document.querySelectorAll('#fav'));
+var recipeTitles = Array.from(document.querySelectorAll("#fav"));
 
 // Changes the favorite icon to solid when a user clicks the button
 starBtn.addEventListener("click", () => {
-  // Checks what is the current color
-  if (star.classList.contains("fa-regular")) {
-    addColor();
-  }
-  else {
-    remColor();
-  }
-  // Makes the small button color to be the same
-  moveFav();
-})
+    // Checks what is the current color
+    if (star.classList.contains("fa-regular")) {
+        addColor();
+        // Rotate GSAP animation
+        gsap.to(".favIcon", { rotation: "+=360", ease: "none" });
+    } else {
+        remColor();
+    }
+    // Makes the small button color to be the same
+    moveFav();
+});
 
 // Adds green color to the big fav icon
 function addColor() {
-  star.classList.remove("fa-regular")
-  star.classList.add("fa-solid")
-  starBtn.style.backgroundColor = "#7ac900"
+    star.classList.remove("fa-regular");
+    star.classList.add("fa-solid");
+    starBtn.style.backgroundColor = "#7ac900";
 }
 
 // Removes green color from the big fav icon
 function remColor() {
-  star.classList.remove("fa-solid")
-  star.classList.add("fa-regular")
-  starBtn.style.backgroundColor = "#2f2921"
+    star.classList.remove("fa-solid");
+    star.classList.add("fa-regular");
+    starBtn.style.backgroundColor = "#2f2921";
+    // Rotate GSAP animation
+    gsap.fromTo(".favIcon", { opacity: 0 }, { opacity: 1, duration: 1 });
 }
 
-// Changes the small fav button color 
+// Changes the small fav button color
 function moveFav() {
-  recipeTitles.forEach((el, id) => {
-    if (el.getAttribute('value') == starBtn.nextElementSibling.firstElementChild.textContent) {
-      if (favMap[id] == false) {
-        recipeTitles[id].style.backgroundColor = "#7ac900"
-        favMap[id] = true;
-      }
-      else {
-        recipeTitles[id].style.backgroundColor = ""
-        favMap[id] = false;
-      }
-    }
-  })
+    recipeTitles.forEach((el, id) => {
+        if (
+            el.getAttribute("value") ==
+            starBtn.nextElementSibling.firstElementChild.textContent
+        ) {
+            if (favMap[id] == false) {
+                recipeTitles[id].style.backgroundColor = "#7ac900";
+                favMap[id] = true;
+            } else {
+                recipeTitles[id].style.backgroundColor = "";
+                favMap[id] = false;
+            }
+        }
+    });
 }
-
-
-// document.querySelectorAll(".recipe").forEach((el, id) => {
-//   el.addEventListener("click", () => {
-//     if (favMap[id] == false) {
-//       remColor();
-//     }
-//     else {
-//       addColor()
-//     }
-//   })
-// })
 
 // Changes both fav icons colors, when you click on the small fav icon button
 document.querySelectorAll("#fav").forEach((el, id) => {
-  el.addEventListener("click", () => {
-    if (favMap[id] == false) {
-      addColor();
-      recipeTitles[id].style.backgroundColor = "#7ac900";
-
-      favMap[id] = !favMap[id];
-    }
-    else {
-      remColor();
-      recipeTitles[id].style.backgroundColor = "";
-
-      favMap[id] = !favMap[id];
-    }
-  })
-})
+    el.addEventListener("click", () => {
+        if (favMap[id] == false) {
+            addColor();
+            recipeTitles[id].style.backgroundColor = "#7ac900";
+            favMap[id] = !favMap[id];
+            gsap.to(".favIcon", { rotation: "+=360", ease: "none" });
+        } else {
+            remColor();
+            recipeTitles[id].style.backgroundColor = "";
+            favMap[id] = !favMap[id];
+        }
+    });
+});
 
 ////////////////////////
 //** Content on click change **//
 ///////////////////////
 
-var saladImg = document.querySelector("#backImg")
-var saladTitle = document.querySelector("#title")
-var saladDescr = document.querySelector("#descr")
-var saladCookRecipe = document.querySelector("#cookRecipe")
+var saladImg = document.querySelector("#backImg");
+var saladTitle = document.querySelector("#title");
+var saladDescr = document.querySelector("#descr");
+var saladCookRecipe = document.querySelector("#cookRecipe");
 
-var recipes = document.querySelectorAll(".recipe")
+var recipes = document.querySelectorAll(".recipe");
 
 recipes.forEach((elem, id) => {
-  elem.addEventListener("click", () => {
-    // Changes the big fav icon color when your switch through the different recipes
-    if (favMap[id] == false) {
-      remColor();
-    }
-    else {
-      addColor()
-    }
+    elem.addEventListener("click", (e) => {
+        // Changes the big fav icon color when your switch through the different recipes
+        if (favMap[id] == false) {
+            remColor();
+        } else {
+            addColor();
+        }
 
-    // Gets the current element content, and starts the changing
-    let salad = elem.children[1].children[0].textContent
-    if (salad.includes("Mung")) {
+        // Gets the current element content, and starts the changing
+        let salad = elem.children[1].children[0].textContent;
 
-      saladImg.setAttribute("src", "images/mung_bean_salad_lg.webp")
-      saladTitle.textContent = salad
-      saladDescr.textContent = `Mung beans, mint, green onions, red wine and olive oil are tossed together to create this healthy, refreshing and darn tasty salad!`
-      saladCookRecipe.innerHTML = `<b>You would need:</b> 
+        // Add fav icon animation on chaning the recipies
+        // But first checks if the recipe that we clicked is the same as the display one, in that case, the animation is not repeated
+        if (salad == saladTitle.textContent) {
+            return;
+        } else {
+            if (
+                e.srcElement.id !== "fav" &&
+                e.srcElement.className !== "fa-solid fa-star"
+            ) {
+                tl.restart();
+                favAnimation.restart();
+            }
+        }
+
+        if (salad.includes("Mung")) {
+            saladImg.setAttribute("src", "images/mung_bean_salad_lg.webp");
+            saladTitle.textContent = salad;
+            saladDescr.textContent = `Mung beans, mint, green onions, red wine and olive oil are tossed together to create this healthy, refreshing and darn tasty salad!`;
+            saladCookRecipe.innerHTML = `<b>You would need:</b> 
 
             ● 1 cup (200 gr) mung bean
             ● 1 piece (60 gr) large red pepper, roasted
@@ -136,15 +140,12 @@ recipes.forEach((elem, id) => {
 
              2. After the mung bean is cooked, wash it with cold water and set aside to drain and cool.
 
-             3. During this time, prepare the vegetables. Cut the tomato into cubes, onion and pepper into thin slices. Squeeze out the juice of half a lemon.`
-
-    }
-    else if (salad.includes("Pasta")) {
-
-      saladImg.setAttribute("src", "images/pasta_salad_lg.webp")
-      saladTitle.textContent = salad
-      saladDescr.textContent = `Super easy Pasta Salad – with pasta, tomatoes, fresh mozzarella, spicy salami, pepperoncini, olives, and easy Italian dressing. DANGEROUSLY GOOD.`
-      saladCookRecipe.innerHTML = `<b>You would need:</b> 
+             3. During this time, prepare the vegetables. Cut the tomato into cubes, onion and pepper into thin slices. Squeeze out the juice of half a lemon.`;
+        } else if (salad.includes("Pasta")) {
+            saladImg.setAttribute("src", "images/pasta_salad_lg.webp");
+            saladTitle.textContent = salad;
+            saladDescr.textContent = `Super easy Pasta Salad – with pasta, tomatoes, fresh mozzarella, spicy salami, pepperoncini, olives, and easy Italian dressing. DANGEROUSLY GOOD.`;
+            saladCookRecipe.innerHTML = `<b>You would need:</b> 
 
             ●  Your favorite pasta noodle shape
             ●  Cherry tomatoes (or some other non-threatening veg)
@@ -168,15 +169,12 @@ recipes.forEach((elem, id) => {
 
              3. Blitz up your dressing in a blender or shake it up in a jar.
              
-             4. Toss together, taste and adjust, and exercise every self-control muscle in your body so as not to eat the whole thing before everyone comes over.`
-
-    }
-    else if (salad.includes("Tuna")) {
-
-      saladImg.setAttribute("src", "images/tuna_salad_lg.webp")
-      saladTitle.textContent = salad
-      saladDescr.textContent = `A classic tuna salad recipe is an easy lunch and can be made ahead of time for meals throughout the week.`
-      saladCookRecipe.innerHTML = `<b>You would need:</b> 
+             4. Toss together, taste and adjust, and exercise every self-control muscle in your body so as not to eat the whole thing before everyone comes over.`;
+        } else if (salad.includes("Tuna")) {
+            saladImg.setAttribute("src", "images/tuna_salad_lg.webp");
+            saladTitle.textContent = salad;
+            saladDescr.textContent = `A classic tuna salad recipe is an easy lunch and can be made ahead of time for meals throughout the week.`;
+            saladCookRecipe.innerHTML = `<b>You would need:</b> 
 
             ● 1 (5-ounce) can tuna packed in water
             ● 1 rib celery, diced
@@ -194,15 +192,12 @@ recipes.forEach((elem, id) => {
              2. Mix the tuna salad ingredients - in a bowl, break the tuna up with a fork. Add the celery, mayonnaise, onion, lemon juice, salt, and pepper. Stir to combine. Taste and adjust the seasonings to your liking. Cover and chill or use immediately.
 
              3. Serve how you like it - Spoon tuna salad onto slices of bread to make a sandwich, scoop onto crackers for a snack, or serve it atop a bed of salad greens for a healthy meal.
-             `
-
-    }
-    else if (salad.includes("Shopska")) {
-
-      saladImg.setAttribute("src", "images/shopska_salad_lg.webp")
-      saladTitle.textContent = salad
-      saladDescr.textContent = `Shopska salad, or shopska salata, is a simple yet elegant Bulgarian side dish you can make with a handful of pantry staples.`
-      saladCookRecipe.innerHTML = `<b>You would need:</b> 
+             `;
+        } else if (salad.includes("Shopska")) {
+            saladImg.setAttribute("src", "images/shopska_salad_lg.webp");
+            saladTitle.textContent = salad;
+            saladDescr.textContent = `Shopska salad, or shopska salata, is a simple yet elegant Bulgarian side dish you can make with a handful of pantry staples.`;
+            saladCookRecipe.innerHTML = `<b>You would need:</b> 
 
             ● 1 tomato large, diced
             ● 1 cucumber continental, diced
@@ -224,15 +219,12 @@ recipes.forEach((elem, id) => {
              3. Let it snow! Grate that cheese right over the bowl until well and truly covered.
 
              4. Serve immediately (or store for around 30 mins in the fridge).
-             `
-
-    }
-    else if (salad.includes("Ceaser")) {
-
-      saladImg.setAttribute("src", "images/ceasar_salad_lg.webp")
-      saladTitle.textContent = salad
-      saladDescr.textContent = `A classic chicken salad recipe, featuring crunchy croutons and a creamy, garlic dressing. Ideal for lunch with friends`
-      saladCookRecipe.innerHTML = `<b>You would need:</b> 
+             `;
+        } else if (salad.includes("Ceaser")) {
+            saladImg.setAttribute("src", "images/ceasar_salad_lg.webp");
+            saladTitle.textContent = salad;
+            saladDescr.textContent = `A classic chicken salad recipe, featuring crunchy croutons and a creamy, garlic dressing. Ideal for lunch with friends`;
+            saladCookRecipe.innerHTML = `<b>You would need:</b> 
 
             ● 1/2 cup high-quality extra virgin olive oil, plus more for brushing
             ● 4 cloves garlic, minced
@@ -259,7 +251,30 @@ recipes.forEach((elem, id) => {
              4. Tear off the chunks of romaine lettuce - using your hands, tear off chunks of lettuce from the heads of romaine lettuce (do not use a knife to cut). Add to the dressing and toss until coated. Add the rest of the Parmesan cheese, and toss.
 
              5. Combine and serve - Coarsely chop the toasted bread into croutons and add to the salad. Brush in any crumbs from chopping the bread, too. Toss and serve immediately.
-             `
-    }
-  });
+             `;
+        }
+    });
 });
+
+// GSAP animations
+
+let favAnimation = gsap.from(".favIcon", {
+    y: -390,
+    duration: 1,
+    delay: 2,
+    rotation: 720,
+    ease: "bounce.out",
+});
+
+let recipeAnimation = gsap.from(".recipe", {
+    x: -1000,
+    duration: 1,
+    ease: "power3.in",
+});
+
+let tl = gsap.timeline();
+
+// add the tweens to the timeline - Note we're using tl.to not gsap.to
+tl.from("#title", { y: -300, duration: 1 });
+tl.from("#descr", { x: 1200, duration: 1 });
+tl.from(".selectedRecipeText", { y: 500, duration: 0.8, ease: "power1.in" });
